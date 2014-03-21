@@ -1,7 +1,7 @@
 package library.domain.adapter;
 
 /**
- * 
+ * Адаптер книги для чтения объекта JSON.
  */
 public class BookAdapter {
     

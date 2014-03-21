@@ -2,14 +2,13 @@ package library.service.impl;
 
 import java.util.Formatter;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import library.dao.BookDAO;
 import library.domain.Author;
 import library.domain.Book;
+import library.service.AuthorService;
 import library.service.BookService;
 
 @Service
@@ -17,18 +16,20 @@ public class BookServiceImpl implements BookService {
 
     @Autowired
     private BookDAO bookDAO;
+    @Autowired
+    private AuthorService authorService;
 
     @Override
     @Transactional
-    public void insertBook(Book book) {
+    public void insert(Book book) {
         bookDAO.insert(book);
     }
 
     @Override
     @Transactional
-    public void removeBook(Book book) {
+    public void remove(long bookId) {
+        Book book = getById(bookId);
         bookDAO.remove(book);
-        book.getAuthor().getBooks().remove(book);
     }
 
     @Override
@@ -39,24 +40,24 @@ public class BookServiceImpl implements BookService {
   
     @Override
     @Transactional
-    public Book getBook(String title) {
+    public Book getByTitle(String title) {
         return bookDAO.getByTitle(title);
     }
 
     @Override
     @Transactional
-    public List<Book> getAuthoredBooks(Author author) {
+    public List<Book> getByAuthor(long authorId) {
+        Author author = authorService.getById(authorId);
         return bookDAO.getByAuthor(author);
     }
 
     @Override
     @Transactional
-    public List<Book> getAllBooks() {
+    public List<Book> getAll() {
         return bookDAO.getAll();
     }
 
     @Override
-    @Transactional
     public String getBooksAsJson(List<Book> books) {
         String jsonResponse = "[ ";
         for (int i = 0; i < books.size(); i++) {

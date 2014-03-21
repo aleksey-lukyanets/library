@@ -2,11 +2,9 @@ package library.service.impl;
 
 import java.util.Formatter;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import library.dao.AuthorDAO;
 import library.domain.Author;
 import library.service.AuthorService;
@@ -19,16 +17,15 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     @Transactional
-    public void insertAuthor(Author author) {
+    public void insert(Author author) {
         authorDAO.insert(author);
     }
 
     @Override
     @Transactional
-    public void removeAuthor(Author author) {
-        if (author != null) {
-            authorDAO.remove(author);
-        }
+    public void remove(long authorId) {
+        Author author = getById(authorId);
+        authorDAO.remove(author);
     }
 
     @Override
@@ -39,12 +36,11 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     @Transactional
-    public List<Author> getAllAuthors() {
+    public List<Author> getAll() {
         return authorDAO.getAll();
     }
 
     @Override
-    @Transactional
     public String getAuthorsAsJson(List<Author> authors) {
         String jsonResponse = "[ ";
         if (authors != null) {

@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>Библиотека</title>
+        <title>Библиотека — Spring MVC</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" media="screen"/>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/customization.css" media="screen"/>
         <script src="${pageContext.request.contextPath}/resources/js/jquery-1.9.0.min.js" type="text/javascript"></script>
@@ -22,8 +23,14 @@
         --%>
         <div align="center">
             <div id="bodyfield" align="left">
-                <div class="btn-group pull-right">
-                    <a id="details" class="btn btn-sm btn-danger">Как это работает?</a>
+                <div class="clearfix" style="margin: 0 0 20px -10px;">
+                    <div class="btn-group">
+                        <span class="btn btn-xs btn-default disabled">сервлет Spring MVC</span>
+                        <a href="<c:url value="/faces/index.xhtml" />" class="btn btn-xs btn-default">перейти к JSF-реализации</a>
+                    </div>
+                    <div class="btn-group pull-right">
+                        <a id="details" class="btn btn-danger">Как это работает?</a>
+                    </div>
                 </div>
                 <table width="100%">
                     <tr>
@@ -39,7 +46,7 @@
                             <input type="button" id="btnAddAuthor" class="btn btn-default" value="добавить автора" />
                         </td>
                         <td>
-                            <input type="button" id="allBooks" class="btn btn-primary" onclick="reloadBooks()" value="показать все книги" />
+                            <input type="button" id="allBooks" class="btn btn-primary btn-pad-right" onclick="reloadBooks()" value="показать все книги" />
                             <input type="button" id="btnAddBook" class="btn btn-default" value="добавить книгу" />
                         </td>
                     </tr>
@@ -75,10 +82,10 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">Добавление автора</h4>
+                        <h4>Добавление автора</h4>
                     </div>
                     <div class="modal-body">
-                        <form class="addAuthor addForm form-horizontal" style="text-align: left;">
+                        <form class="addAuthor form-horizontal" style="text-align: left;">
                             <div class="form-group">
                                 <label for="name" class="col-sm-5 control-label">имя автора:</label>
                                 <div class="col-sm-7">
@@ -93,7 +100,7 @@
                             </div>
                             <div class="form-group">
                                 <center>
-                                    <input type="button" class="showAddAuthor btn btn-success" data-dismiss="modal" onclick="addNewAuthor()" value="сохранить" />
+                                    <input type="button" class="btn btn-success" data-dismiss="modal" onclick="addNewAuthor()" value="добавить" />
                                 </center>
                             </div>
                         </form>
@@ -106,10 +113,10 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">Добавление книги</h4>
+                        <h4>Добавление книги</h4>
                     </div>
                     <div class="modal-body">
-                        <form class="addBook addForm form-horizontal">
+                        <form class="addBook form-horizontal">
                             <div class="form-group">
                                 <label for="name" class="col-sm-5 control-label">автор книги:</label>
                                 <div class="col-sm-7">
@@ -124,7 +131,7 @@
                             </div>
                             <div class="form-group">
                                 <center>
-                                    <input type="button" class="showAddBook btn btn-success" data-dismiss="modal" onclick="addNewBook()" value="сохранить" />
+                                    <input type="button" class="btn btn-success" data-dismiss="modal" onclick="addNewBook()" value="добавить" />
                                 </center>
                             </div>
                         </form>
@@ -149,12 +156,13 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">Добро пожаловать в веб-библиотеку</h4>
+                        <h4>Добро пожаловать в веб-библиотеку (Spring MVC)</h4>
                     </div>
                     <div class="modal-body">
                         <p>Библиотека — простое клиент-серверное приложение, которое позволяет хранить,
                             просматривать, изменять списки авторов и книг в базе данных.
-                            Благодаря применению JavaScript (jQuery, AJAX, JSON) для асинхронного
+                            Благодаря применению JavaScript (jQuery, AJAX, JSON,
+                            см. <a href="<c:url value="/resources/js/main.js" />">main.js</a>) для асинхронного
                             обращения к серверу, все операции выполняются без обновления страницы.</p>
                         
                         <h4 class="modal-title">Технологии</h4>
@@ -208,6 +216,13 @@
                         <pre style="width: 55%;">{"name": "Лев Толстой", "countryId": 3}</pre>
                         <p>Ответ приложения при успешном добавлении автора:</p>
                         <pre style="width: 45%;">{<br>    "status": "ok",<br>    "response": {<br>        "id": 271,<br>        "name": "Лев Толстой",<br>        "country": "Россия"<br>    }<br>}</pre>
+
+                        <h4 class="modal-title">Модель базы данных</h4>
+                        
+                        <center>
+                            <img src="${pageContext.request.contextPath}${initParam.imagesPath}db-model.png"
+                                 alt="схема базы данных"/>
+                        </center>
                     </div>
                 </div>
             </div>

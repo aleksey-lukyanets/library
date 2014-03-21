@@ -1,8 +1,5 @@
 package library.domain;
 
-import java.util.HashSet;
-import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,9 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import org.hibernate.annotations.IndexColumn;
 
 /**
  * Автор.
@@ -33,11 +28,6 @@ public class Author implements java.io.Serializable {
 
     @Column(name = "name", nullable = false)
     private String name;
-
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "author")
-    @IndexColumn(name = "id")
-    private Set<Book> books = new HashSet<>(0);
 
     public Author() {
     }
@@ -70,13 +60,4 @@ public class Author implements java.io.Serializable {
     public void setName(String name) {
         this.name = name;
     }
-
-    public Set<Book> getBooks() {
-        return this.books;
-    }
-
-    public void setBooks(Set<Book> books) {
-        this.books = books;
-    }
-
 }

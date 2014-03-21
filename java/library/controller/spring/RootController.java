@@ -20,7 +20,7 @@ public class RootController {
     @Value("${serverUrl}")
     private String serverUrl;
     @Autowired
-    CountryService countryService;
+    private CountryService countryService;
 
     @RequestMapping(value = "/index",
             method = RequestMethod.GET)
@@ -33,6 +33,6 @@ public class RootController {
             method = RequestMethod.GET,
             produces = "application/json; charset=utf-8")
     public @ResponseBody List<Country> getCountries() {
-        return countryService.getAllCountries();
+        return countryService.getAll();
     }
 }

@@ -25,14 +25,14 @@ import library.domain.adapter.AuthorAdapter;
 public class AuthorController {
     
     @Autowired
-    AuthorService authorService;
+    private AuthorService authorService;
     @Autowired
-    CountryService countryService;
+    private CountryService countryService;
 
     @RequestMapping(method = RequestMethod.GET,
             produces = "application/json; charset=utf-8")
     public @ResponseBody String getAuthors() {
-        List<Author> authors = authorService.getAllAuthors();
+        List<Author> authors = authorService.getAll();
         return authorService.getAuthorsAsJson(authors);
     }
     
@@ -42,9 +42,9 @@ public class AuthorController {
     public @ResponseBody String addAuthor(@RequestBody AuthorAdapter adapter) {
         String jsonResponse = "{\"status\": ";
         try {
-            Country country = countryService.getCountryById(adapter.getCountryId());
+            Country country = countryService.getById(adapter.getCountryId());
             Author author = new Author(country, adapter.getName());
-            authorService.insertAuthor(author);
+            authorService.insert(author);
             jsonResponse += "\"ok\", \"response\":" + authorService.getAuthorAsJson(author);
         } catch (Exception ex) {
             jsonResponse += "\"error\"";
@@ -57,8 +57,7 @@ public class AuthorController {
             value = "/{authorId}",
             consumes = "application/json")
     public ResponseEntity<String> removeAuthor(@PathVariable long authorId) {
-        Author author = authorService.getById(authorId);
-        authorService.removeAuthor(author);
+        authorService.remove(authorId);
         return new ResponseEntity<>(new HttpHeaders(), HttpStatus.OK);
     }
 

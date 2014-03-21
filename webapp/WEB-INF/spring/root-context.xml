@@ -9,9 +9,10 @@
     http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
     <context:annotation-config />
- 
+    
     <context:component-scan base-package="library.dao.impl" />
     <context:component-scan base-package="library.service.impl" />
+    <context:component-scan base-package="library.controller.jsf" />
     
     <import resource="data.xml" />
 

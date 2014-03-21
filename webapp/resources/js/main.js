@@ -53,6 +53,7 @@ function loadAllBooks() {
             });
         }
     });
+    $('#allBooks').hide();
 }
 
 function loadAllCountries() {
@@ -112,6 +113,7 @@ function addNewAuthor() {
         }
     });
     showRemoveAuthorAction();
+    $("#books").empty();
 
     // Обновление выпадающего списка формы "Добавить книгу"
     authorMapNameToId[authorName] = authorId;
@@ -135,7 +137,7 @@ function deleteAuthor()
     });
     var rowIndex = $(checkedRadio).closest('tr').index();
     deleteTableRow("authors", rowIndex);
-    $("#books").empty();
+    loadAllBooks();
 
     for (var key in authorMapNameToId) {
         if (authorMapNameToId[key] == authorId) {

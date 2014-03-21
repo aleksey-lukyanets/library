@@ -1,18 +1,20 @@
 package library.service;
 
 import java.util.List;
-
 import library.domain.Country;
 
+/**
+ * Сервис управления странами.
+ */
 public interface CountryService {
 
-    void insertCountry(Country country);
+    void insert(Country country);
 
-    Country getCountryById(long countryId);
+    Country getById(long countryId);
 
-    Country getCountry(String title);
+    Country getByTitle(String title);
 
-    List<Country> getAllCountries();
+    List<Country> getAll();
 
     String getCountriesAsJson(List<Country> country);
     

@@ -1,22 +1,24 @@
 package library.service;
 
 import java.util.List;
-import library.domain.Author;
 import library.domain.Book;
 
+/**
+ * Сервис управления книгами.
+ */
 public interface BookService {
 
-    void insertBook(Book book);
+    void insert(Book book);
 
-    void removeBook(Book book);
+    void remove(long bookId);
 
     Book getById(long bookId);
     
-    Book getBook(String title);
+    Book getByTitle(String title);
     
-    List<Book> getAuthoredBooks(Author author);
+    List<Book> getByAuthor(long authorId);
 
-    List<Book> getAllBooks();
+    List<Book> getAll();
 
     String getBooksAsJson(List<Book> books);
     

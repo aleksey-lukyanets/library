@@ -26,16 +26,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class BookController {
 
     @Autowired
-    AuthorService authorService;
+    private AuthorService authorService;
     @Autowired
-    BookService bookService;
+    private BookService bookService;
     @Autowired
-    CountryService countryService;
+    private CountryService countryService;
 
     @RequestMapping(method = RequestMethod.GET,
             produces = "application/json; charset=utf-8")
     public @ResponseBody String getBooks() {
-        List<Book> books = bookService.getAllBooks();
+        List<Book> books = bookService.getAll();
         return bookService.getBooksAsJson(books);
     }
 
@@ -45,8 +45,7 @@ public class BookController {
     public @ResponseBody String getBooksByAuthor(@PathVariable long authorId) {
         String jsonResponse = "{\"status\": ";
         try {
-            Author author = authorService.getById(authorId);
-            List<Book> books = bookService.getAuthoredBooks(author);
+            List<Book> books = bookService.getByAuthor(authorId);
             jsonResponse += "\"ok\", \"response\":" + bookService.getBooksAsJson(books);
         } catch (Exception ex) {
             jsonResponse += "\"error\"";
@@ -63,7 +62,7 @@ public class BookController {
         try {
             Author author = authorService.getById(adapter.getAuthorId());
             Book book = new Book(author, adapter.getTitle());
-            bookService.insertBook(book);
+            bookService.insert(book);
             jsonResponse += "\"ok\", \"response\":" + bookService.getBookAsJson(book);
         } catch (Exception ex) {
             jsonResponse += "\"error\"";
@@ -76,8 +75,7 @@ public class BookController {
             value = "/{bookId}",
             consumes = "application/json")
     public ResponseEntity<String> removeBook(@PathVariable long bookId) {
-        Book book = bookService.getById(bookId);
-        bookService.removeBook(book);
+        bookService.remove(bookId);
         return new ResponseEntity<>(new HttpHeaders(), HttpStatus.OK);
     }
 }

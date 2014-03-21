@@ -2,11 +2,9 @@ package library.service.impl;
 
 import java.util.Formatter;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import library.dao.CountryDAO;
 import library.domain.Country;
 import library.service.CountryService;
@@ -19,25 +17,25 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     @Transactional
-    public void insertCountry(Country country) {
+    public void insert(Country country) {
         countryDAO.insert(country);
     }
 
     @Override
     @Transactional
-    public Country getCountryById(long countryId) {
+    public Country getById(long countryId) {
         return countryDAO.getById(countryId);
     }
 
     @Override
     @Transactional
-    public Country getCountry(String countryname) {
-        return countryDAO.getByTitle(countryname);
+    public Country getByTitle(String title) {
+        return countryDAO.getByTitle(title);
     }
 
     @Override
     @Transactional
-    public List<Country> getAllCountries() {
+    public List<Country> getAll() {
         return countryDAO.getAll();
     }
 
