@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:composition template="./template.xhtml">
+
+        <!--
+        Список авторов
+        -->
+        <ui:define name="authors">
+            <h:form id="authorsList">
+                <h:selectOneRadio value="#{authorsBean.selectedAuthorId}"
+                                  id="currentAuthor" layout="pageDirection" class="units-list">
+                    <f:selectItems value="#{authorsBean.authorsList}"
+                                   var="author" itemValue="#{author.id}" itemLabel="#{author.name} [#{author.country.title}]"/>
+                    <f:ajax execute="@form" render="@form :authorsControl :booksList :booksControl" />
+                </h:selectOneRadio>
+            </h:form>
+        </ui:define>
+
+        <!--
+        Список книг
+        -->
+        <ui:define name="books">
+            <h:form id="booksList">
+                <h:selectOneRadio value="#{booksBean.selectedBookId}"
+                                  id="currentBook" layout="pageDirection" class="units-list">
+                    <f:selectItems value="#{booksBean.booksList}"
+                                   var="book" itemValue="#{book.id}" itemLabel="#{book.title}"/>
+                    <f:ajax execute="@form" render="@form :booksControl" />
+                </h:selectOneRadio>
+            </h:form>
+        </ui:define>
+
+        <!--
+        Кнопки управления авторами
+        -->
+        <ui:define name="addAuthor">
+            <h:form styleClass="addAuthor form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-5 control-label">имя автора:</label>
+                    <div class="col-sm-7">
+                        <h:inputText value="#{authorsBean.newAuthorName}" id="name" styleClass="form-control"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-5 control-label">страна рождения:</label>
+                    <div class="col-sm-7">
+                        <h:selectOneMenu id="countrySelect" value="#{authorsBean.authorCountryId}" styleClass="form-control">
+                            <f:selectItems value="#{countriesBean.countriesList}" var="country" itemValue="#{country.id}" itemLabel="#{country.title}"/>
+                        </h:selectOneMenu>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <center>
+                        <h:commandButton value="добавить" styleClass="btn btn-success" p:data-dismiss="modal">
+                            <f:ajax execute="@form" render=":authorsList :authorsControl :addBook:authorSelect" listener="#{authorsBean.addAuthor}"/>
+                        </h:commandButton>
+                    </center>
+                </div>
+            </h:form>
+        </ui:define>
+
+        <!--
+        Кнопки управления книгами
+        -->
+        <ui:define name="addBook">
+            <h:form id="addBook" styleClass="addBook form-horizontal">
+                <div class="form-group">
+                    <label for="name" class="col-sm-5 control-label">автор книги:</label>
+                    <div class="col-sm-7">
+                        <h:selectOneMenu id="authorSelect" value="#{booksBean.bookAuthorId}" styleClass="form-control">
+                            <f:selectItems value="#{authorsBean.authorsList}" var="author" itemValue="#{author.id}" itemLabel="#{author.name}"/>
+                        </h:selectOneMenu>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="countrySelect" class="col-sm-5 control-label">название книги:</label>
+                    <div class="col-sm-7">
+                        <h:inputText value="#{booksBean.newBookTitle}" id="title" styleClass="form-control"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <center>
+                        <h:commandButton value="добавить" styleClass="btn btn-success" p:data-dismiss="modal">
+                            <f:ajax execute="@form" render=":booksList" listener="#{booksBean.addBook}"/>
+                        </h:commandButton>
+                    </center>
+                </div>
+            </h:form>
+        </ui:define>
+
+    </ui:composition>
+</html>
