@@ -102,7 +102,6 @@ public class RestExceptionHandler {
     public ValidationErrorDTO processValidationError(MethodArgumentNotValidException ex) {
         BindingResult result = ex.getBindingResult();
         List<FieldError> fieldErrors = result.getFieldErrors();
-
         return processFieldErrors(fieldErrors);
     }
     
@@ -110,12 +109,10 @@ public class RestExceptionHandler {
     
     private ValidationErrorDTO processFieldErrors(List<FieldError> fieldErrors) {
         ValidationErrorDTO dto = new ValidationErrorDTO();
-
         for (FieldError fieldError: fieldErrors) {
             String localizedErrorMessage = resolveErrorMessage(fieldError);
             dto.addFieldError(fieldError.getField(), localizedErrorMessage);
         }
-
         return dto;
     }
 
