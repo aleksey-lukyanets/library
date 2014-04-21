@@ -73,11 +73,6 @@ function loadAllCountries() {
 
 /**
  * Добавление нового автора.
- * 
- * Добавление автора на страницу происходит без ожидания ответа на запрос.
- * Отдельно из ответа считывается идентификатор, присвоенный новому автору базой данных.
- *
- * Добавление автора с существующим именем не допускается.
  */
 function addNewAuthor() {
     var authorName = document.getElementById("name").value;
@@ -101,9 +96,9 @@ function addNewAuthor() {
                 authorRadio.attr('data-db-id', id);
 
                 // Обновление выпадающего списка формы "Добавить книгу"
-                authorMapNameToId[authorName] = authorId;
+                authorMapNameToId[authorName] = id;
                 refreshSelectAccordingTo("authorSelect", authorMapNameToId);
-                $("#authorSelect").val(authorId);
+                $("#authorSelect").val(id);
 
                 showRemoveAuthorAction();
                 $("#books").empty();

@@ -35,19 +35,4 @@
         <property name="useCodeAsDefaultMessage" value="true"/>
     </bean>
     
-    <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
-        <property name="exceptionMappings">
-            <props>
-                <prop key="org.hibernate.HibernateException">error/error</prop>
-                <prop key="java.lang.Exception">error/error</prop>
-                <prop key="java.lang.RuntimeException">error/error</prop>
-            </props>
-        </property>
-        <property name="statusCodes">
-            <props>
-                <prop key="error/error">500</prop>
-            </props>
-        </property>
-    </bean>
-    
 </beans>
