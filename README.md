@@ -1,38 +1,170 @@
 <p>Библиотека — простое клиент-серверное приложение, которое позволяет хранить,
     просматривать, изменять списки авторов и книг в базе данных.
-    Благодаря применению JavaScript (jQuery, AJAX, JS) для асинхронного
-    обращения к серверу, все операции выполняются без обновления страницы.</p>
+    Благодаря применению JavaScript (jQuery, AJAX, JSON,
+    см. <a href="https://github.com/aleksej-lukyanets/library/blob/master/webapp/resources/js/main.js">main.js</a>)
+    для асинхронного обращения к серверу, все операции выполняются без
+    обновления страницы.</p>
+
+<h4 class="modal-title">Технологии</h4>
 
 <p>Приложение разработано на Java с использованием технологий:</p>
 <ul class="discharged">
-  <li>сервлеты: Spring MVC, JavaServer Pages;</li>
-  <li>доступ к данным: Hibernate;</li>
-  <li>веб-интерфейс: jQuery, AJAX, Bootstrap;</li>
-  <li>база данных: PostgreSQL;</li>
-  <li>контейнер сервлетов: Apache Tomcat.</li>
+    <li>сервлет: Spring MVC, JavaServer Pages;</li>
+    <li>доступ к данным и валидация: JPA, Hibernate;</li>
+    <li>тесты: Spring Test, JUnit, Mockito, Hamcrest, JSONPath;</li>
+    <li>веб-интерфейс: jQuery, AJAX, Bootstrap;</li>
+    <li>база данных: PostgreSQL;</li>
+    <li>контейнер сервлетов: Apache Tomcat.</li>
 </ul>
 
-<p>Структура каталогов:</p>
-<table><tr><td valign="top" width="250">
-java<br>
-└── library<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── controller<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── spring<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── jsf<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── dao<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── impl<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── domain<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── adapter<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── service<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── impl<br>
-</td><td valign="top" width="250">
-webapp<br>
-├── META-INF<br>
-├── WEB-INF<br>
-&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── conf<br>
-&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── spring<br>
-&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── views<br>
-└── resources<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── css<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── js</p>
-</td></tr></table>
+<h4 class="modal-title">REST-интерфейс приложения</h4>
+
+<p>Архитектура веб-слоя приложения реализована в соответствии со стилем REST.
+    Описание методов доступа приведено <a data-dismiss="modal" class="rest">на отдельной странице</a>.</p>
+
+<h4 class="modal-title">Обработка исключений</h4>
+
+<p>Исключительные ситуации, возникающие в приложении, обрабатываются через создание,
+    трансляцию и обработку исключений. Обработка пользовательских вынесена в единый класс
+    <code>library.exception.RestExceptionHandler</code>, где в ответ сервера добавлются
+    необходимые данные и статусы (включая ясные для восприятия описания ошибок валидации
+    объекта, переданного запросом POST).</p>
+<p>Работа с необрабатываемыми исключениями доверена классу
+    <code>SimpleMappingExceptionResolver</code> Spring, который возвращает клиенту
+    статус 500 Internal Server Error при возникновении такого рода исключений.</p>
+
+<h4 class="modal-title">Тесты</h4>
+
+<p>Приложение включает 18 модульных тестов для классов-контроллеров и 20 интеграционных
+    тестов, работающих с тестовым набором данных из БД. Сравнение ответов сервера
+    производится средствами Hamcrest и JSONPath, в модульных тестах используются
+    объекты-заглушки Mockito.</p>
+
+<h4 class="modal-title">Модель базы данных</h4>
+
+<center>
+    <img src="http://library.jelasticloud.com/resources/img/db-model.png" alt="схема базы данных"/>
+</center>
+
+<h2>REST-интерфейс приложения</h2>
+
+<p>REST-интерфейс предоставляет доступ к ресурсам приложения, обмен данными производится
+    в формате JSON. Для наглядности некоторые поля объектов (страна у автора, автор у книги)
+    используют текстовые строки вместо идентификаторов.</p>
+
+<p>Результат всех GET-запросов доступен для просмотра через веб-браузер. Так обращение
+    к ресурсу <code>/countries</code> возвращает список стран:</p>
+<pre style="width: 50%;">[<br>    {"id": 1, "title": "Германия"},<br>    {"id": 2, "title": "Дания"},<br>    {"id": 3, "title": "Россия"},<br>    {"id": 4, "title": "США"}<br>]</pre>
+<p>Запросы POST и DELETE можно выполнить любым REST-клиентом.</p>
+
+<h4 class="modal-title">Обратная связь</h4>
+
+<p>Все запросы возвращают в заголовке ответа информацию о результате их исполнения.</p>
+<p>Запрос на добавление нового автора может выглядеть так:</p>
+<pre style="width: 90%;">заголовок:   Content-Type: application/json; charset=UTF-8<br>тело:        {"id": 0, "name": "Лев Толстой", "country": "Россия"}</pre>
+<p>Ответ приложения:</p>
+<pre style="width: 90%;">заголовок:   Status Code: 201 Created<br>             Content-Type: application/json; charset=UTF-8<br>             Location: http://library.jelasticloud.com/authors/8<br>тело:        {"id": 8, "name": "Лев Толстой", "country": "Россия"}</pre>
+<p>Запрос на добавление книги с некорректным именем автора:</p>
+<pre style="width: 90%;">заголовок:   Content-Type: application/json; charset=UTF-8<br>тело:        {"id": 0, "author": "абв", "title": "Анна Каренина"}</pre>
+<p>Ответ приложения:</p>
+<pre style="width: 95%;">заголовок:   Status Code: 406 Not Acceptable<br>             Content-Type: application/json; charset=UTF-8<br>тело:        {<br>                 "fieldErrors":<br>                 [{"field": "author", "message": "Неизвестный автор."}]<br>             }</pre>
+
+<h4 class="modal-title">Операции с ресурсами</h4>
+
+<h5>Авторы</h5>
+<table class="table">
+    <thead>
+        <tr>
+            <th width="150">ресурс</th>
+            <th>описание</th>
+            <th>статусы ответа</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>GET /authors</td>
+            <td>Возвращает перечень авторов.</td>
+            <td>200</td>
+        </tr>
+        <tr>
+            <td>GET /authors/:id</td>
+            <td>Возвращает автора с указанным id.</td>
+            <td>200 — автор возвращён в теле ответа,<br>
+                404 — автора с указанным id не существует</td>
+        </tr>
+        <tr>
+            <td>GET /authors/:id/books</td>
+            <td>Возвращает список книг автора с указанным id.</td>
+            <td>200 — книги возвращены в теле ответа,<br>
+                404 — автора с указанным id не существует</td>
+        </tr>
+        <tr>
+            <td>POST /authors</td>
+            <td>Добавляет нового автора. В теле ответа возвращает созданного автора, в заголовке - ссылку на созданный ресурс.</td>
+            <td>201 — автор создан,<br>
+                406 — автор с таким именем уже существует,<br>
+                422 — некорректные параметры автора (длина имени или названия страны)</td>
+        </tr>
+        <tr>
+            <td>DELETE /authors/:id</td>
+            <td>Удаляет автора с указанным id и возвращает его в теле ответа.</td>
+            <td>200 — автор удалён,<br>
+                404 — автора с таким id не существует</td>
+        </tr>
+    </tbody>
+</table>
+
+<h5>Книги</h5>
+<table class="table">
+    <thead>
+        <tr>
+            <th width="150">ресурс</th>
+            <th>описание</th>
+            <th>статусы ответа</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>GET /books</td>
+            <td>Возвращает перечень книг всех авторов.</td>
+            <td>200</td>
+        </tr>
+        <tr>
+            <td>GET /books/:id</td>
+            <td>Возвращает перечень книг всех авторов.</td>
+            <td>200 — книга возвращена в теле ответа,<br>
+                404 — книги с таким id не существует</td>
+        </tr>
+        <tr>
+            <td>POST /books</td>
+            <td>Добавляет новую книгу. В теле ответа возвращает созданную книгу, в заголовке - ссылку на созданный ресурс.</td>
+            <td>201 — книга создана,<br>
+                406 — книга с таким названием уже существует у указанного автора,<br>
+                422 — некорректные параметры книги (длина имени автора или названия книги)</td>
+        </tr>
+        <tr>
+            <td>DELETE /books/:id</td>
+            <td>Удаляет книгу с указанным id и возвращает её в теле ответа.</td>
+            <td>200 — книга удалена,<br>
+                404 — книги с таким id не существует</td>
+        </tr>
+    </tbody>
+</table>
+
+<h5>Страны</h5>
+<table class="table">
+    <thead>
+        <tr>
+            <th width="150">ресурс</th>
+            <th>описание</th>
+            <th>статусы ответа</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>GET /countries</td>
+            <td>Возвращает перечень стран.</td>
+            <td>200</td>
+        </tr>
+    </tbody>
+</table>
