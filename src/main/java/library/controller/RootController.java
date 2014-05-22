@@ -46,7 +46,8 @@ public class RootController {
     @RequestMapping(value = "/countries",
             method = RequestMethod.GET,
             produces = MediaTypesUtf8.APPLICATION_JSON_UTF8_VALUE)
-    public @ResponseBody List<Country> getCountries() {
+    @ResponseBody
+    public List<Country> getCountries() {
         return countryService.getAll();
     }
 }

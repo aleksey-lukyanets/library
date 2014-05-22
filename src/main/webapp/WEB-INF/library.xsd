@@ -1,23 +1,54 @@
 <?xml version="1.0"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://mycompany.com/hr/schemas">
-    <xs:element xmlns:sch="http://mycompany.com/hr/schemas" name="HolidayRequest" type="sch:HolidayRequestType"/>
-    <xs:complexType name="HolidayType">
-        <xs:sequence>
-            <xs:element type="xs:date" name="StartDate"/>
-            <xs:element type="xs:date" name="EndDate"/>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="EmployeeType">
-        <xs:sequence>
-            <xs:element type="xs:byte" name="Number"/>
-            <xs:element type="xs:string" name="FirstName"/>
-            <xs:element type="xs:string" name="LastName"/>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="HolidayRequestType">
-        <xs:sequence>
-            <xs:element xmlns:sch="http://mycompany.com/hr/schemas" type="sch:HolidayType" name="Holiday"/>
-            <xs:element xmlns:sch="http://mycompany.com/hr/schemas" type="sch:EmployeeType" name="Employee"/>
-        </xs:sequence>
-    </xs:complexType>
-</xs:schema>
+<schema
+    xmlns="http://www.w3.org/2001/XMLSchema"
+    xmlns:sch="http://mycompany.com/hr/schemas"
+    attributeFormDefault="unqualified"
+    elementFormDefault="qualified"
+    targetNamespace="http://mycompany.com/hr/schemas">
+    
+    <element name="HolidayRequest" type="sch:HolidayRequestType"/>
+    
+    <element name="CountriesRequest" type="sch:Void"/>
+    
+    <element name="CountriesResponse" type="sch:CountriesResponseType"/>
+    
+    <complexType name="HolidayType">
+        <sequence>
+            <element type="date" name="StartDate"/>
+            <element type="date" name="EndDate"/>
+        </sequence>
+    </complexType>
+    
+    <complexType name="EmployeeType">
+        <sequence>
+            <element type="byte" name="Number"/>
+            <element type="string" name="FirstName"/>
+            <element type="string" name="LastName"/>
+        </sequence>
+    </complexType>
+    
+    <complexType name="HolidayRequestType">
+        <sequence>
+            <element type="sch:HolidayType" name="Holiday"/>
+            <element type="sch:EmployeeType" name="Employee"/>
+        </sequence>
+    </complexType>
+    
+    <complexType name="CountriesResponseType">
+        <sequence>
+            <element name="Country" type="sch:CountryType" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+    
+    <complexType name="CountryType">
+        <sequence>
+            <element type="long" name="Id"/>
+            <element type="string" name="Title"/>
+        </sequence>
+    </complexType>
+    
+    <complexType name="Void">
+        <sequence/>
+    </complexType>
+    
+</schema>

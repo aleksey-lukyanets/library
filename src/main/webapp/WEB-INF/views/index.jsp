@@ -55,7 +55,7 @@
                     <ul class="list-inline">
                         <li><a class="rest btn btn-xs btn-default">REST API</a></li>
                         <li><a href="https://github.com/aleksej-lukyanets/library">исходные коды на github</a></li>
-                        <li><a href="http://spb.hh.ru/resume/002aa1acff01bbb6c90039ed1f744c5a305658">резюме на hh.ru</a></li>
+                        <%--<li><a href="http://spb.hh.ru/resume/002aa1acff01bbb6c90039ed1f744c5a305658">резюме на hh.ru</a></li>--%>
                     </ul>
                 </div>
             </div>
